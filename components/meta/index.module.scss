@@ -1,0 +1,14 @@
+.root {
+  text-align: center;
+  color: var(--text-color);
+  a {
+    color: var(--text-color);
+    font-size: 10px;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+  i {
+    font-size: 30px;
+  }
+}

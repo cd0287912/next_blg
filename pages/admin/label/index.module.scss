@@ -1,0 +1,24 @@
+.root {
+  padding: 20px;
+}
+
+.content {
+  padding: 20px;
+  background: var(--bg-content);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.cover {
+  margin: 0 auto;
+  width: 60px;
+  img {
+    width: 100%;
+  }
+}
+.table {
+  margin-top: 20px;
+}
+.pagination {
+  margin-top: 20px;
+}
