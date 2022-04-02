@@ -8,8 +8,8 @@ export const authApis = {
       data,
     })
   },
-  regist(data) {
-    return instance({
+  regist<T>(data) {
+    return instance<T>({
       url: "/auth/sign_up",
       method: "post",
       data,
@@ -87,16 +87,78 @@ export const labelApis = {
   },
 }
 export const userApis = {
+  getUserInfo<T>() {
+    return instance<T>({
+      url: "/user/userInfo",
+    })
+  },
   getUsers<T>(params) {
     return instance<T>({
       url: "/user",
       params,
     })
   },
-  delUser(id) {
-    return instance({
+  delUser<T>(id) {
+    return instance<T>({
       url: `/user/${id}`,
       method: "delete",
+    })
+  },
+}
+
+export const commentApis = {
+  getCommentList<T>(params) {
+    return instance<T>({
+      url: "comment",
+      params,
+    })
+  },
+  delCommentById<T>(id) {
+    return instance<T>({
+      url: `/comment/${id}`,
+      method: "delete",
+    })
+  },
+}
+export const visitorApis = {
+  getVisitor<T>(params) {
+    return instance<T>({
+      url: "/visit",
+      params,
+    })
+  },
+  deleteVisitor<T>(id) {
+    return instance<T>({
+      url: `/visit/${id}`,
+      method: "delete",
+    })
+  },
+}
+export const readmeApis = {
+  createReadme<T>(data) {
+    return instance<T>({
+      url: "/readme",
+      method: "post",
+      data,
+    })
+  },
+  getReadme<T>() {
+    return instance<T>({
+      url: "/readme",
+    })
+  },
+}
+export const sysApis = {
+  getSys<T>() {
+    return instance<T>({
+      url: "/sys",
+    })
+  },
+  createSys<T>(data) {
+    return instance<T>({
+      url: "/sys",
+      method: "post",
+      data,
     })
   },
 }
@@ -127,6 +189,35 @@ export const homeApi = {
   getTagById<T>(id) {
     return getInstance<T>({
       url: `/tag/${id}`,
+    })
+  },
+  saveComment<T>(data) {
+    return getInstance<T>({
+      url: "comment",
+      method: "post",
+      data,
+    })
+  },
+  getCommentList<T>(params) {
+    return getInstance<T>({
+      url: "comment",
+      params,
+    })
+  },
+  getSysDetail<T>() {
+    return getInstance<T>({
+      url: "/sys/detail",
+    })
+  },
+  saveVisitor<T>() {
+    return getInstance<T>({
+      url: "/visit",
+      method: "post",
+    })
+  },
+  getReadme<T>() {
+    return getInstance<T>({
+      url: "/readme",
     })
   },
 }

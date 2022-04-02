@@ -1,1 +1,17 @@
-.root {}
+.editor {
+  display: flex;
+  min-height: calc(100vh - 60px);
+  textarea {
+    width: 50%;
+    outline: none;
+    border: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .preview {
+    width: 50%;
+    padding: 10px;
+    border-left: 1px solid #ccc;
+  }
+}

@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import styles from "./index.module.scss"
-import Image from "next/image"
 import classnames from "classnames"
+import { spring, Motion } from "react-motion"
+import { Sys } from "./../../types"
+import { isCdn } from "../../tools"
 const navlist = [
   {
     label: "文章",
@@ -21,33 +23,38 @@ const navlist = [
     id: 2,
   },
   {
-    label: "关于",
-    path: "/about",
+    label: "README",
+    path: "/readme",
     id: 3,
   },
 ]
-export default function TopHead() {
+export default function TopHead(props: Sys) {
+  const [showMenu, setShowMenu] = useState(false)
   const [theme, toggleTheme] = useState(true)
   const router = useRouter()
-  /*
-   * 改变主题模式
-   */
   const handleChangeTheme = (type) => {
     toggleTheme(type)
-    if (document.body.classList.contains("dark")) {
+    if (type) {
       document.body.classList.remove("dark")
     } else {
       document.body.classList.add("dark")
     }
   }
+  useEffect(() => {
+    if (document.body.classList.contains("dark")) {
+      toggleTheme(false)
+    } else {
+      toggleTheme(true)
+    }
+  })
   return (
     <div className={styles.root}>
       <div className={styles.container}>
         <div className={styles.logo}>
           <Link href="/">
             <a>
-              <Image src="/panda.svg" height="50" width="50"></Image>
-              <div className={styles.title}>忘不了oh</div>
+              <img src={isCdn(props.sysLogo)} width="50" height="50" alt="" />
+              <div className={styles.title}>{props.sysTitle}</div>
             </a>
           </Link>
         </div>
@@ -63,6 +70,7 @@ export default function TopHead() {
             </li>
           ))}
         </ul>
+
         <div className={styles.theme}>
           {theme ? (
             <i
@@ -75,14 +83,31 @@ export default function TopHead() {
               className="iconfont icon-sun"
             ></i>
           )}
-          {/* <i title="github" className="iconfont icon-github"></i> */}
-          {/* <i
-            onClick={() => router.push("/admin")}
-            title="后台管理"
-            className="iconfont icon-data-view"
-          ></i> */}
+        </div>
+        <div onClick={() => setShowMenu(!showMenu)} className={styles.menu}>
+          <i className="iconfont icon-toggle-left"></i>
         </div>
       </div>
+      <Motion style={{ height: spring(showMenu ? 240 : 0) }}>
+        {({ height }) => (
+          <div
+            className={styles.mobileMenu}
+            style={{ height, overflow: "hidden" }}
+          >
+            {navlist.map((item) => (
+              <div
+                onClick={() => router.push(item.path)}
+                className={classnames(styles.menuList, {
+                  active: router.pathname === item.path,
+                })}
+                key={item.id}
+              >
+                {item.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </Motion>
     </div>
   )
 }

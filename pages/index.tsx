@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Carousel } from "antd"
 import classnames from "classnames"
 import Layout from "./../components/layout"
@@ -8,75 +8,81 @@ import ArticlItem from "./../components/articleItem"
 import Meta from "./../components/meta"
 import Head from "next/head"
 import { homeApi } from "./../apis"
-import { isCdn } from "../tools"
+import { isCdn, debounce } from "../tools"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
-import { Post, Tag } from "./../types"
+import { Post, Tag, Sys } from "./../types"
 
 interface Prop {
   tagList: Tag[]
   recomdList: Post[]
   pageList: Post[]
   total: number
-}
-
-interface PageFilter {
-  pageNo: number
-  pageSize: number
-  tagId: string
+  sys: Sys
 }
 
 interface SwiperPorps {
   recomdList: Post[]
 }
+const PAGESIZE = 20
 
 export default function Home(props: Prop) {
+  const pageNoRef = useRef(1)
   const router = useRouter()
-  const { recomdList, tagList, pageList, total } = props
+  const { recomdList, tagList, pageList, total, sys } = props
 
-  const [pageFilter, setPageFilter] = useState<PageFilter>({
-    pageNo: 1,
-    pageSize: 20,
-    tagId: "",
-  })
+  const [list, setList] = useState(() => pageList)
 
-  const [pageInfo, setPageInfo] = useState(() => ({
-    total,
-    list: pageList,
-  }))
+  useEffect(() => {
+    const getInfo = async () => {
+      const params = {
+        pageNo: pageNoRef.current,
+        pageSize: PAGESIZE,
+        tagId: "",
+      }
+      const result = await homeApi.getPagesList<{
+        list: Post[]
+        total: number
+      }>(params)
+      setList((pre) => [...pre, ...result.list])
+    }
+    const fn = async (e) => {
+      const body = document.documentElement || document.body
+      const scrollHeight = body.scrollHeight
+      const scrollTop = body.scrollTop
+      const clientHeight = body.clientHeight
+      if (clientHeight + scrollTop >= scrollHeight) {
+        const maxPageNo = Math.ceil(total / PAGESIZE)
+        if (pageNoRef.current < maxPageNo) {
+          pageNoRef.current++
+          getInfo()
+        }
+      }
+    }
 
-  // useEffect(() => {
-  //   const getPageList = async () => {
-  //     const result = await homeApi.getPagesList<{
-  //       list: Post[]
-  //       total: number
-  //     }>(pageFilter)
-  //     setPageInfo(result)
-  //   }
-  //   getPageList()
-  // }, [pageFilter])
-
+    document.addEventListener("scroll", debounce(fn, 300))
+    return () => {
+      document.removeEventListener("scroll", debounce(fn, 300))
+    }
+  }, [])
   return (
-    <Layout>
+    <Layout {...sys}>
       <Head>
-        <title>忘不了oh-文章</title>
+        <title>{sys.sysTitle}-文章</title>
       </Head>
       <div className={styles.root}>
         <section className={styles.content}>
           <Swiper recomdList={recomdList} />
           <div className={styles.pageList}>
-            {pageInfo.list.map((page) => (
+            {list.map((page) => (
               <ArticlItem {...page} key={page.id} />
             ))}
           </div>
         </section>
         <aside className={styles.nav}>
           <div className={styles.navContent}>
-            <NavBox title="自我介绍">
-              <div className={styles.introduce}>
-                hello!
-                我是忘不了oh，一位专业的前端BUG制造者，希望能制造更多的bug~
-              </div>
+            <NavBox title="关于">
+              <div className={styles.introduce}>{sys.sysAbout}</div>
             </NavBox>
             <NavBox title="推荐阅读">
               <div className={styles.recomdList}>
@@ -104,7 +110,7 @@ export default function Home(props: Prop) {
                 ))}
               </div>
             </NavBox>
-            <Meta />
+            <Meta {...sys} />
           </div>
         </aside>
       </div>
@@ -147,14 +153,21 @@ function Swiper(props: SwiperPorps) {
 }
 
 export async function getStaticProps() {
-  const params = { pageNo: 1, pageSize: 20, tagId: "" }
+  const params = { pageNo: 1, pageSize: PAGESIZE, tagId: "" }
   const recomdList = await homeApi.getRecommdPages<Post[]>()
   const tagList = await homeApi.getAllTags<Tag[]>()
   const result = await homeApi.getPagesList<{
     list: Post[]
     total: number
   }>(params)
+  const sys = await homeApi.getSysDetail<Sys>()
   return {
-    props: { recomdList, tagList, pageList: result.list, total: result.total },
+    props: {
+      recomdList,
+      tagList,
+      pageList: result.list,
+      total: result.total,
+      sys,
+    },
   }
 }

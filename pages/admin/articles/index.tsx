@@ -2,7 +2,17 @@ import AdminLayout from "../../../components/adminLayout"
 import styles from "./index.module.scss"
 import Head from "next/head"
 import { useEffect, useState } from "react"
-import { Button, Table, Tag, message, Pagination, Dropdown, Menu } from "antd"
+import {
+  Button,
+  Table,
+  Tag,
+  message,
+  Pagination,
+  Dropdown,
+  Menu,
+  Modal,
+} from "antd"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 import dayjs from "dayjs"
 import { articleApis } from "./../../../apis"
 import { useRouter } from "next/router"
@@ -37,16 +47,16 @@ export default function Articles() {
     getInfo()
   }, [pagination])
 
-  const menu = (id, recomd) => {
+  const menu = (id, record) => {
     return (
       <Menu>
         <Menu.Item onClick={() => toggleRecomd(id)}>
-          {recomd ? "取消" : ""}推荐
+          {record.recommend ? "取消" : ""}推荐
         </Menu.Item>
         <Menu.Item onClick={() => router.push(`/admin/write?id=${id}`)}>
           编辑
         </Menu.Item>
-        <Menu.Item onClick={() => del(id)}>删除</Menu.Item>
+        <Menu.Item onClick={() => del(id, record.title)}>删除</Menu.Item>
       </Menu>
     )
   }
@@ -115,10 +125,7 @@ export default function Articles() {
       align: "center",
       // width: 300,
       render: (_, record) => (
-        <Dropdown
-          overlay={menu(record.id, record.recommend)}
-          placement="bottomRight"
-        >
+        <Dropdown overlay={menu(record.id, record)} placement="bottomRight">
           <i style={{ fontSize: 20 }} className="iconfont icon--more"></i>
         </Dropdown>
       ),
@@ -130,12 +137,10 @@ export default function Articles() {
    * @param {string} id
    */
   const toggleRecomd = async (id: string) => {
-    try {
-      await articleApis.toggleArticleRecommd(id)
+    const res = await articleApis.toggleArticleRecommd<string>(id)
+    if (res) {
       setPagination({ ...pagination })
       message.success("设置成功")
-    } catch (error) {
-      message.error("设置失败")
     }
   }
 
@@ -143,10 +148,19 @@ export default function Articles() {
    * 删除文章
    * @param {string} id
    */
-  const del = async (id: string) => {
-    await articleApis.delArticle(id)
-    message.success("删除成功")
-    setPagination({ ...pagination, pageNo: 1 })
+  const del = (id: string, title: string) => {
+    Modal.confirm({
+      title: `删除${title}吗`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "确认",
+      cancelText: "取消",
+      onOk: async () => {
+        const res = await articleApis.delArticle<string>(id)
+        if (!res) return
+        message.success("删除成功")
+        setPagination({ ...pagination, pageNo: 1 })
+      },
+    })
   }
 
   return (

@@ -6,9 +6,9 @@ export default function Admin() {
   return (
     <AdminLayout>
       <Head>
-        <title>仪表盘</title>
+        <title>统计·分析</title>
       </Head>
-      <div className={styles.root}>12e</div>
+      <div className={styles.root}>待定</div>
     </AdminLayout>
   )
 }

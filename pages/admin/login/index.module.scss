@@ -1,3 +1,15 @@
+@media (max-width: 900px) {
+  .loginBg {
+    display: none;
+  }
+  .content {
+    background: url("/images/login_banner.jpg") !important;
+    background-size: 100% 100% !important;
+    background-position: 0 0 !important;
+    background-repeat: no-repeat !important;
+  }
+}
+
 .root {
   height: 100vh;
   position: relative;
@@ -17,17 +29,16 @@
   background: var(--bg-body);
 }
 
-
 .loginBox {
-  padding:40px 40px;
+  padding: 40px 40px;
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background: var(--bg-content);
   box-shadow: var(--box-shadow);
   border-radius: 6px;
-  .tab { 
+  .tab {
     margin-bottom: 30px;
     display: flex;
     span {
@@ -39,7 +50,7 @@
       cursor: pointer;
       position: relative;
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         width: 20px;
         height: 2px;

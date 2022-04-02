@@ -5,7 +5,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC,
     Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei,
     sans-serif;
-
+  user-select: none;
   --primary: #f25f5c;
   /* --primary: #ffb300; */
   --bg-head: #fff;
@@ -13,23 +13,25 @@ body {
   --bg-content: #fff;
   --text-color: #333;
   --border-color: #e5e6eb;
+  --grey-color: #00000059;
   --box-shadow: 0 1px 3px #1212121a;
   --border-radius: 2px;
 }
 body.dark {
-  --primary: #f40a12;
-  /* --primary: #ffb300; */
+  /* --primary: #f40a12; */
+  --primary: #f25f5c;
   --bg-head: #282c35;
   --bg-body: #282c35;
   --bg-content: #363c48;
   --text-color: #fff;
   --border-color: #fff3;
+  --grey-color: #ffffff73;
   --box-shadow: 0 2px 15px 0 #1a1a1ba2;
   --border-radius: 2px;
 }
-/* body::-webkit-scrollbar {
-  width: 0;
-} */
+#nprogress .bar {
+  background: var(--primary) !important;
+}
 
 a {
   /* color: inherit; */
@@ -40,30 +42,25 @@ a:hover {
 }
 * {
   box-sizing: border-box;
-  transition: all 0.2s ease-in-out, margin 0.2s ease-in-out,
+  transition: background 0.2s ease-in-out, margin 0.2s ease-in-out,
     opacity 0.2s ease-in-out, filter 0.2s ease-in-out,
     visibility 0.2s ease-in-out, transform 0.2s ease-in-out,
     border-color 0.2s ease-in-out;
 }
-pre {
+/* pre {
   padding: 10px;
   background: #fff;
   border-radius: 3px;
-}
-blockquote {
+} */
+/* blockquote {
   margin: 20px 30px !important;
 }
 hr {
   background: var(--border-color);
-}
-ul {
-  /* list-style: none;
-  padding: 0 !important;
-  margin: 0 !important; */
-}
-/* -------------- */
-/* :root {
 } */
+.hidden {
+  overflow: hidden;
+}
 /* -------------- */
 .app-container {
   min-height: 100vh;
@@ -120,4 +117,25 @@ body.dark {
 }
 .ant-anchor-link {
   padding: 0 0 0 16px;
+}
+
+.ant-pagination-item-active {
+  border-color: var(--primary);
+}
+.ant-pagination-item-active a {
+  color: var(--primary);
+}
+.ant-pagination-item:hover {
+  border-color: var(--primary);
+}
+.ant-pagination-item:hover a {
+  color: var(--primary);
+}
+.ant-pagination-next:hover .ant-pagination-item-link {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.ant-pagination-prev:hover .ant-pagination-item-link {
+  border-color: var(--primary);
+  color: var(--primary);
 }

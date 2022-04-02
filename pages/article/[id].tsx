@@ -8,36 +8,30 @@ import { homeApi } from "./../../apis/index"
 import { isCdn } from "./../../tools"
 import dayjs from "dayjs"
 import { marked } from "marked"
-// import Tocify from "./tocify"
 import hljs from "highlight.js"
-import "highlight.js/styles/github.css"
 import NavBox from "../../components/navBox"
-import { Post, Tag } from "./../../types"
-
-// let tocify = new Tocify()
-const renderer = new marked.Renderer()
-// renderer.heading = function (text, level, raw) {
-//   const anchor = tocify.add(text, level)
-//   return `<a id="${anchor}" href="#${anchor}" class="anchor-fix"><h${level}>${text}</h${level}></a>\n`
-// }
+import Meta from "../../components/meta"
+import { Post, Tag, Sys } from "./../../types"
 
 interface Props {
   pageInfo: Post
   recomdList: Post[]
   allTags: Tag[]
+  sys: Sys
 }
+
 export default function ArticleDetail({
   pageInfo,
   recomdList,
   allTags,
+  sys,
 }: Props) {
   const router = useRouter()
   const [html, setHtml] = useState()
   useEffect(() => {
     if (!pageInfo.content) return
     const html = marked(pageInfo.content, {
-      // renderer: new marked.Renderer(),
-      renderer,
+      renderer: new marked.Renderer(),
       gfm: true,
       pedantic: false,
       sanitize: false,
@@ -50,18 +44,19 @@ export default function ArticleDetail({
       },
     })
     setHtml(html)
-    // return () => {
-    //   tocify.reset()
-    // }
   }, [pageInfo.content])
 
   return (
-    <Layout>
+    <Layout {...sys}>
       <Head>
         <title>忘不了oh</title>
       </Head>
       <div className={styles.root}>
-        <div className={styles.pageContainer}>
+        <div
+          className={classnames(styles.pageContainer, {
+            cover: !pageInfo.cover,
+          })}
+        >
           {pageInfo.cover && (
             <div className={styles.pageCover}>
               <img src={isCdn(pageInfo.cover)} alt="" />
@@ -71,20 +66,17 @@ export default function ArticleDetail({
             <h2>{pageInfo.title}</h2>
             <p>
               <span>{dayjs(pageInfo.create_time).format("YYYY-MM-DD")}</span>
+              <span>{pageInfo.tag.name}</span>
               <span>{pageInfo.view_times} 次浏览</span>
             </p>
             <div className={styles.hr}></div>
           </div>
           <div
-            className={styles.pageContent}
+            className={classnames(styles.pageContent, "markdown-body")}
             dangerouslySetInnerHTML={{ __html: html }}
           ></div>
         </div>
         <div className={styles.pageSide}>
-          {/* <div className={styles.catalogue}>
-            <div className={styles.cataTitle}>目录</div>
-            <div className="toc">{tocify && tocify.render()}</div>
-          </div> */}
           <div className={styles.navContent}>
             <NavBox title="推荐阅读">
               <div className={styles.recomdList}>
@@ -112,6 +104,7 @@ export default function ArticleDetail({
                 ))}
               </div>
             </NavBox>
+            <Meta {...sys} />
           </div>
         </div>
       </div>
@@ -122,13 +115,16 @@ export default function ArticleDetail({
 export async function getServerSideProps(ctx) {
   const id = ctx.params.id
   const pageInfo = await homeApi.getPageById<Post>(id)
+  console.log(pageInfo)
   const recomdList = await homeApi.getRecommdPages<Post[]>()
   const allTags = await homeApi.getAllTags<Tag[]>()
+  const sys = await homeApi.getSysDetail<Sys>()
   return {
     props: {
       pageInfo,
       recomdList,
       allTags,
+      sys,
     },
   }
 }

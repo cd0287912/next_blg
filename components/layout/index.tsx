@@ -1,9 +1,16 @@
+import { ReactNode } from "react"
 import TopHead from "./../topHead"
-function Layout(porps) {
+import { Sys } from "./../../types"
+
+interface Props extends Sys {
+  children: ReactNode
+}
+function Layout(props: Props) {
+  const { children, ...sys } = props
   return (
     <div className="app-container">
-      <TopHead />
-      <div className="app-content">{porps.children}</div>
+      <TopHead {...sys} />
+      <div className="app-content">{children}</div>
     </div>
   )
 }

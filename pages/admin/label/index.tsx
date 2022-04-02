@@ -2,11 +2,21 @@ import AdminLayout from "../../../components/adminLayout"
 import styles from "./index.module.scss"
 import Head from "next/head"
 import { useEffect, useState } from "react"
-import { Button, Table, Space, Modal, Form, Input, Radio, message } from "antd"
+import {
+  Button,
+  Table,
+  Space,
+  Modal,
+  Form,
+  Input,
+  message,
+  Popconfirm,
+} from "antd"
 import { labelApis } from "./../../../apis"
 import UploadBox from "./../../../components/uploadBox"
 import { isCdn } from "../../../tools"
 import { Tag } from "./../../../types"
+import dayjs from "dayjs"
 
 export default function Label() {
   const [form] = Form.useForm()
@@ -26,7 +36,14 @@ export default function Label() {
       title: "标题",
       dataIndex: "name",
       key: "name",
-      width: 300,
+    },
+    {
+      title: "时间",
+      dataIndex: "create_time",
+      key: "create_time",
+      align: "center",
+      width: 200,
+      render: (_) => <span>{dayjs(_).format("YYYY-MM-DD HH:mm:ss")}</span>,
     },
     {
       title: "描述",
@@ -57,9 +74,16 @@ export default function Label() {
           <Button onClick={() => addLabel(record)} type="primary">
             编辑
           </Button>
-          <Button onClick={() => handleDel(record.id)} danger>
-            删除
-          </Button>
+
+          <Popconfirm
+            placement="bottom"
+            title="确认删除?"
+            onConfirm={() => handleDel(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>删除</Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -106,15 +130,16 @@ export default function Label() {
       } else {
         result = await labelApis.updateLabel<Tag>(modal.id, data)
       }
-      if (result.id) {
+      if (result && result.id) {
         message.success("操作成功")
         cancel()
+        getInfo()
       }
-      getInfo()
     })
   }
   const handleDel = async (id: string) => {
-    await labelApis.deLabel(id)
+    const res = await labelApis.deLabel<string>(id)
+    if (!res) return
     message.success("删除成功")
     getInfo()
   }

@@ -12,10 +12,8 @@ class MyDocument extends Document {
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="stylesheet"
-            href="//at.alicdn.com/t/font_3203231_aq076ugabs5.css"
+            href="//at.alicdn.com/t/font_3203231_a6gp0sx67h6.css"
           />
-          <script src="https://cdn.bootcdn.net/ajax/libs/vConsole/3.9.0/vconsole.min.js"></script>
-          <script>new window.VConsole()</script>
         </Head>
         <body>
           <Main />

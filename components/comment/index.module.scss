@@ -1,4 +1,5 @@
 .root {
+  margin-bottom: 20px;
 }
 .input {
   padding: 4px 6px;
@@ -9,9 +10,68 @@
   border: 1px solid var(--border-color);
   color: var(--text-color);
   &::placeholder {
-    color: var(--text-color);
+    color: var(--grey-color);
   }
 }
 .controls {
   margin-top: 4px;
+}
+// =================modalContent========
+.modalContent {
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 20px;
+  i {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--primary);
+    font-size: 40px;
+  }
+}
+
+// =================commentItem=======
+.commentItem {
+  border-top: 1px solid var(--border-color);
+  padding: 20px 0;
+  display: flex;
+}
+.user {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.content {
+  margin-left: 10px;
+  flex: 1;
+  .userInfo {
+    word-break: break-all;
+    .username {
+      color: var(--text-color);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 38px;
+    }
+    .useragent {
+      margin-left: 20px;
+      color: var(--grey-color);
+    }
+  }
+
+  .values {
+    color: var(--text-color);
+    word-break: break-all;
+    margin-top: 20px;
+  }
+  .detail {
+    margin-top: 20px;
+    color: var(--grey-color);
+  }
+  .time {
+    margin-right: 20px;
+  }
 }

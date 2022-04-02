@@ -34,13 +34,15 @@ export default function Login() {
             const backUrl = String(router.query.back)
             location.replace(backUrl)
           } else {
-            router.replace("/admin")
+            router.replace("/admin/articles")
           }
         }, 1000)
       } else {
-        await authApis.regist(params)
-        message.success("注册成功!")
-        setLoginType(true)
+        const result = await authApis.regist<string>(params)
+        if (result) {
+          message.success("注册成功!")
+          setLoginType(true)
+        }
       }
     }
   }
@@ -78,6 +80,7 @@ export default function Login() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="用户名"
               type="text"
+              maxLength={20}
               key={String(loginType)}
             />
           </div>
@@ -86,6 +89,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="密码"
               type="password"
+              maxLength={20}
               key={String(loginType)}
             />
           </div>

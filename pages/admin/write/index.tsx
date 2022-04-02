@@ -6,8 +6,9 @@ import { Select, Modal, Form, Input, message } from "antd"
 import UploadBox from "./../../../components/uploadBox"
 import Head from "next/head"
 import { marked } from "marked"
+import classnames from "classnames"
 import hljs from "highlight.js"
-import "highlight.js/styles/github.css"
+// import "highlight.js/styles/github.css"
 import { labelApis, articleApis } from "./../../../apis"
 const { Option } = Select
 interface Lable {
@@ -159,7 +160,7 @@ export default function Write() {
           <div
             id="show-area"
             dangerouslySetInnerHTML={{ __html: html }}
-            className={styles.preview}
+            className={classnames(styles.preview, "markdown-body")}
           ></div>
         </div>
       </div>

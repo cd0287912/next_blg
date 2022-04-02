@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"
 import Layout from "../../components/layout"
 import ArticlItem from "../../components/articleItem"
+import Meta from "../../components/meta"
 import Head from "next/head"
 import { homeApi } from "./../../apis"
 import styles from "./[id].module.scss"
@@ -8,15 +9,21 @@ import { isCdn } from "../../tools"
 import { useRouter } from "next/router"
 import classnames from "classnames"
 import NavBox from "./../../components/navBox"
-import { Tag, Post } from "./../../types"
+import { Tag, Post, Sys } from "./../../types"
 import dayjs from "dayjs"
 
 interface Props {
   tagInfo: Tag
   allTags: Tag[]
   recomdList: Post[]
+  sys: Sys
 }
-export default function SeriesDetail({ tagInfo, recomdList, allTags }: Props) {
+export default function SeriesDetail({
+  tagInfo,
+  recomdList,
+  allTags,
+  sys,
+}: Props) {
   const router = useRouter()
   const posts = useMemo<Post[]>(() => {
     const posts = []
@@ -33,9 +40,11 @@ export default function SeriesDetail({ tagInfo, recomdList, allTags }: Props) {
     return posts
   }, [tagInfo])
   return (
-    <Layout>
+    <Layout {...sys}>
       <Head>
-        <title>忘不了oh-专题</title>
+        <title>
+          {sys.sysTitle}-{tagInfo.name}
+        </title>
       </Head>
       <div className={styles.root}>
         <div className={styles.content}>
@@ -88,6 +97,7 @@ export default function SeriesDetail({ tagInfo, recomdList, allTags }: Props) {
                 ))}
               </div>
             </NavBox>
+            <Meta {...sys} />
           </div>
         </div>
       </div>
@@ -98,7 +108,7 @@ export default function SeriesDetail({ tagInfo, recomdList, allTags }: Props) {
 export async function getServerSideProps(ctx) {
   const id = ctx.params.id
   const tagInfo = await homeApi.getTagById(id)
-
+  const sys = await homeApi.getSysDetail<Sys>()
   const recomdList = await homeApi.getRecommdPages<Post[]>()
   let allTags = await homeApi.getAllTags<Tag[]>()
   allTags = allTags.filter((tag) => tag.id != id)
@@ -107,6 +117,7 @@ export async function getServerSideProps(ctx) {
       tagInfo,
       recomdList,
       allTags,
+      sys,
     },
   }
 }

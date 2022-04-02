@@ -1,15 +1,17 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import classnames from "classnames"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import { Tooltip, Avatar } from "antd"
 import styles from "./index.module.scss"
+import { userApis } from "./../../../apis"
+import { User } from "./../../../types"
 const navList = [
-  {
-    path: "/admin",
-    label: "仪表盘",
-    icon: "icon-data-view",
-  },
+  // {
+  //   path: "/admin",
+  //   label: "统计·分析",
+  //   icon: "icon-data-view",
+  // },
   {
     path: "/admin/write",
     label: "写文章",
@@ -17,18 +19,23 @@ const navList = [
   },
   {
     path: "/admin/articles",
-    label: "文章管理",
+    label: "文章",
     icon: "icon-file-open",
   },
   {
     path: "/admin/label",
-    label: "标签系列",
+    label: "标签",
     icon: "icon-task",
   },
   {
     path: "/admin/user",
-    label: "游客管理",
+    label: "游客",
     icon: "icon-user",
+  },
+  {
+    path: "/admin/visitor",
+    label: "访客记录",
+    icon: "icon-navigation",
   },
   {
     path: "/admin/message",
@@ -37,15 +44,28 @@ const navList = [
   },
   {
     path: "/admin/about",
-    label: "关于",
+    label: "README",
     icon: "icon-map",
+  },
+  {
+    path: "/admin/sys",
+    label: "系统设置",
+    icon: "icon-setting",
   },
 ]
 function AdminHead() {
   const router = useRouter()
+  const [userInfo, setUserInfo] = useState<User>({ username: "", id: "" })
   const handlePush = (path: string) => {
     router.push(path)
   }
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const result = await userApis.getUserInfo<User>()
+      setUserInfo(result)
+    }
+    getUserInfo()
+  }, [])
   return (
     <div className={styles.root}>
       <div className={styles.logo}>
@@ -73,8 +93,8 @@ function AdminHead() {
           </div>
         </Tooltip>
         <div className={styles.tipItem}>
-          <Avatar>USER</Avatar>
-          <span className={styles.username}>忘不了oh</span>
+          <Avatar src="https://picsum.photos/38">{userInfo.username}</Avatar>
+          <span className={styles.username}>{userInfo.username}</span>
         </div>
       </div>
     </div>

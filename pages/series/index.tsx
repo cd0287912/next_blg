@@ -4,17 +4,18 @@ import Head from "next/head"
 import { homeApi } from "./../../apis"
 import { isCdn } from "./../../tools"
 import { useRouter } from "next/router"
-import { Tag } from "./../../types"
+import { Tag, Sys } from "./../../types"
 
 interface Prop {
   tagList: Tag[]
+  sys: Sys
 }
 function Series(props: Prop) {
-  const { tagList } = props
+  const { tagList, sys } = props
   return (
-    <Layout>
+    <Layout {...sys}>
       <Head>
-        <title>忘不了oh-专题</title>
+        <title>{sys.sysTitle}-专题</title>
       </Head>
       <div className={styles.root}>
         {tagList.map((tag) => (
@@ -51,7 +52,8 @@ function SeriesBox(props: Tag) {
 
 export async function getStaticProps() {
   const tagList = await homeApi.getAllTags<Tag[]>()
-  return { props: { tagList } }
+  const sys = await homeApi.getSysDetail<Sys>()
+  return { props: { tagList, sys } }
 }
 
 export default Series

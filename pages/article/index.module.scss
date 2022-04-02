@@ -7,7 +7,11 @@
 .root {
   display: flex;
 }
-
+.pageContainer {
+  &:global(.cover) {
+    padding-top: 10px;
+  }
+}
 .pageContainer {
   width: 0;
   flex: 1;
@@ -22,6 +26,7 @@
     }
   }
   .pageTitle {
+    margin-top: 20px;
     text-align: center;
     .hr {
       margin: 0 20px;
@@ -32,54 +37,21 @@
       color: var(--text-color);
     }
     span {
-      color: var(--text-color);
+      color: var(--grey-color);
       margin: 0 10px;
     }
   }
   .pageContent {
     padding: 20px;
-    p,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    li {
-      color: var(--text-color);
-    }
-    pre {
-      background: var(--bg-body);
-      code {
-        color: var(--text-color);
-      }
-    }
   }
 }
 
 .pageSide {
   width: 300px;
   margin-left: 20px;
-  // .catalogue {
-  //   padding: 10px;
-  //   position: sticky;
-  //   top: 84px;
-  //   background: var(--bg-content);
-  //   box-shadow: var(--box-shadow);
-  //   border-radius: var(--border-radius);
-  //   a {
-  //     color: var(--text-color);
-  //   }
-  //   .cataTitle {
-  //     margin-bottom: 10px;
-  //     font-size: 500px;
-  //     font-size: 20px;
-  //     color: var(--text-color);
-  //   }
-  // }
   .navContent {
     position: sticky;
-    top: 84px;
+    top: 74px;
   }
   .recomdList {
     padding: 6px 0;

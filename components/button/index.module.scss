@@ -1,0 +1,22 @@
+.root {
+  cursor: pointer;
+  display: inline-block;
+  padding: 4px 15px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355);
+  background: #fff;
+  // margin: 0 10px;
+  &:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+  &:global(.primary) {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

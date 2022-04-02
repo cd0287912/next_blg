@@ -1,46 +1,40 @@
 import AdminLayout from "../../../components/adminLayout"
 import styles from "./index.module.scss"
 import Head from "next/head"
-import { Space, Table, Button, Pagination, Popconfirm, message } from "antd"
 import { useState, useEffect } from "react"
-import { userApis } from "../../../apis"
+import { Space, Table, Button, Pagination, Popconfirm, message } from "antd"
+import { visitorApis } from "../../../apis"
+import { Visitor } from "./../../../types"
 import dayjs from "dayjs"
-// https://api.prodless.com/avatar.png
-interface User {
-  id: string
-  username: string
-  create_time: string
-}
-interface UserList {
+
+interface VisitorResult {
+  list: Visitor[]
   total: number
-  list: User[]
 }
-export default function User() {
-  const [pagination, setPagination] = useState({ pageNo: 1, pageSize: 6 })
-  const [state, setState] = useState<UserList>({ list: [], total: 0 })
+
+export default function VisitorList() {
+  const [pagination, setPagination] = useState({ pageNo: 1, pageSize: 10 })
+  const [state, setState] = useState<VisitorResult>({ list: [], total: 0 })
   const columns: any = [
     {
-      title: "序号",
-      dataIndex: "index",
-      key: "index",
-      align: "center",
-      width: 100,
-      render: (_, r, index) => <span>{index + 1}</span>,
-    },
-    {
-      title: "用户名",
-      align: "center",
-      width: 300,
-      dataIndex: "username",
-      key: "username",
-    },
-    {
-      title: "注册时间",
+      title: "时间",
       align: "center",
       dataIndex: "create_time",
       key: "create_time",
       width: 200,
       render: (_) => <span>{dayjs(_).format("YYYY-MM-DD HH:mm:ss")}</span>,
+    },
+    {
+      title: "浏览器",
+      align: "center",
+      dataIndex: "browser",
+      key: "browser",
+    },
+    {
+      title: "操作系统",
+      align: "center",
+      dataIndex: "os",
+      key: "os",
     },
     {
       title: "IP",
@@ -55,13 +49,6 @@ export default function User() {
       key: "address",
     },
     {
-      title: "身份",
-      align: "center",
-      dataIndex: "roles",
-      key: "roles",
-      render: (_) => <span>{_ == "visitor" ? "游客" : "管理员"}</span>,
-    },
-    {
       title: "操作",
       align: "center",
       width: 200,
@@ -69,40 +56,38 @@ export default function User() {
         <Space>
           <Popconfirm
             onConfirm={() => del(record.id)}
-            title={`确定删除 ${record.username}`}
+            title="确定删除"
             okText="是的"
             cancelText="偶~不"
           >
-            <Button danger>删号</Button>
+            <Button danger>删除</Button>
           </Popconfirm>
-          <Button type="primary">授权</Button>
         </Space>
       ),
     },
   ]
+  const del = async (id) => {
+    const result = await visitorApis.deleteVisitor<Visitor>(id)
+    if (!result.id) return
+    message.success("删除成功")
+    setPagination({ pageNo: 1, pageSize: pagination.pageSize })
+  }
+
   useEffect(() => {
-    const getUsers = async () => {
-      const result = await userApis.getUsers<UserList>(pagination)
+    const getVisitor = async () => {
+      const result = await visitorApis.getVisitor<VisitorResult>(pagination)
       setState(result)
     }
-    getUsers()
+    getVisitor()
   }, [pagination])
-
-  const del = async (id: string) => {
-    const result = await userApis.delUser<User>(id)
-    if (result.id) {
-      message.success("删除成功")
-      setPagination({ ...pagination, pageNo: 1 })
-    }
-  }
   return (
     <AdminLayout>
       <Head>
-        <title>游客管理</title>
+        <title>访客记录</title>
       </Head>
       <div className={styles.root}>
         <div className={styles.content}>
-          <div className={styles.title}>游客列表</div>
+          <div className={styles.title}>访客记录</div>
           <div className={styles.table}>
             <Table
               rowKey={(c) => c.id}

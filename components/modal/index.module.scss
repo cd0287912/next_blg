@@ -1,0 +1,28 @@
+.root {
+  z-index: 99;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($color: #000000, $alpha: 0.2);
+}
+
+.content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-content);
+  box-shadow: var(--box-shadow);
+  width: 280px;
+  border-radius: var(--border-radius);
+  padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  div {
+    margin: 0 10px;
+  }
+}

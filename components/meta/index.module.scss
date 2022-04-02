@@ -1,8 +1,10 @@
 .root {
   text-align: center;
   color: var(--text-color);
+  // color: var(--grey-color);
   a {
     color: var(--text-color);
+    // color: var(--grey-color);
     font-size: 10px;
     &:hover {
       color: var(--primary);
