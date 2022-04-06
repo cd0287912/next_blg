@@ -12,15 +12,23 @@ function ArticlItem(props: Post) {
       className={styles.root}
       onClick={() => router.push(`/article/${props.id}`)}
     >
-      <div className={styles.title}>{props.title}</div>
+      <div className={classnames(styles.title, "text-overflow")}>
+        {props.title}
+      </div>
       <div className={styles.infoContainer}>
         <div className={styles.info}>
           <div className={classnames(styles.desc, "text3-overflow")}>
             {props.description}
           </div>
           <div className={styles.detail}>
-            {props.tag && <div className={styles.tag}>{props.tag.name}</div>}
-            <div className={styles.viewTimes}>{props.view_times}·浏览</div>
+            {props.tag && (
+              <div className={classnames(styles.tag, "text-overflow")}>
+                {props.tag.name}
+              </div>
+            )}
+            <div className={classnames(styles.viewTimes, "text-overflow")}>
+              {props.view_times}·浏览
+            </div>
             <div className={styles.time}>
               {dayjs(props.create_time).format("MM/DD/YYYY")}
             </div>

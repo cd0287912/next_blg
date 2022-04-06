@@ -87,11 +87,11 @@ function AdminHead() {
         ))}
       </div>
       <div className={styles.tips}>
-        <Tooltip placement="bottom" title="全屏">
+        {/* <Tooltip placement="bottom" title="全屏">
           <div className={styles.tipItem}>
             <i className="iconfont icon-fullscreen-expand"></i>
           </div>
-        </Tooltip>
+        </Tooltip> */}
         <div className={styles.tipItem}>
           <Avatar src="https://picsum.photos/38">{userInfo.username}</Avatar>
           <span className={styles.username}>{userInfo.username}</span>

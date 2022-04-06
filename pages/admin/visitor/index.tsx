@@ -51,7 +51,7 @@ export default function VisitorList() {
     {
       title: "操作",
       align: "center",
-      width: 200,
+      width: 100,
       render: (_, record) => (
         <Space>
           <Popconfirm

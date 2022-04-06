@@ -2,6 +2,9 @@
   .detail .time {
     display: none;
   }
+  .tag {
+    flex: 1;
+  }
 }
 
 .root {
@@ -19,6 +22,7 @@
 
 .title {
   display: inline-block;
+  width: 100%;
 
   font-size: 16px;
   font-weight: 500;

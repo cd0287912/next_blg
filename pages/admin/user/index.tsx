@@ -64,7 +64,7 @@ export default function User() {
     {
       title: "操作",
       align: "center",
-      width: 200,
+      width: 100,
       render: (_, record) => (
         <Space>
           <Popconfirm
@@ -75,7 +75,6 @@ export default function User() {
           >
             <Button danger>删号</Button>
           </Popconfirm>
-          <Button type="primary">授权</Button>
         </Space>
       ),
     },

@@ -26,7 +26,7 @@ export function CommentForm({ onSuccess }) {
   }
 
   const handleFocus = () => {
-    if (!localStorage.getItem(TOKEN)) {
+    if (!localStorage.getItem(TOKEN) && typeof window !== "undefined") {
       setShow(true)
     }
   }

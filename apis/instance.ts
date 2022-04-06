@@ -28,7 +28,12 @@ getInstance.interceptors.response.use((response) => {
 
 instance.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = "Bearer " + localStorage.getItem("_token")
+    const ISSERVER = typeof window === "undefined"
+    if (!ISSERVER) {
+      config.headers.Authorization =
+        "Bearer " + window.localStorage.getItem(TOKEN)
+    }
+    // config.headers.Authorization = "Bearer " + localStorage.getItem("_token")
     return config
   },
   (error) => {

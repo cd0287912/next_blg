@@ -115,7 +115,6 @@ export default function ArticleDetail({
 export async function getServerSideProps(ctx) {
   const id = ctx.params.id
   const pageInfo = await homeApi.getPageById<Post>(id)
-  console.log(pageInfo)
   const recomdList = await homeApi.getRecommdPages<Post[]>()
   const allTags = await homeApi.getAllTags<Tag[]>()
   const sys = await homeApi.getSysDetail<Sys>()
