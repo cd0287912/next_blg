@@ -1,13 +1,18 @@
 import { message } from "antd"
 import axios from "axios"
 import { TOKEN } from "./../tools"
-
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:8080"
+      : "/nestApi",
 })
 
 const getInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:8080"
+      : "/nestApi",
 })
 
 getInstance.interceptors.request.use((config) => {
@@ -33,7 +38,6 @@ instance.interceptors.request.use(
       config.headers.Authorization =
         "Bearer " + window.localStorage.getItem(TOKEN)
     }
-    // config.headers.Authorization = "Bearer " + localStorage.getItem("_token")
     return config
   },
   (error) => {

@@ -2,6 +2,11 @@
   .pageSide {
     display: none;
   }
+  .pageContent {
+      img { 
+        width:  auto!important;
+      }
+  }
 }
 
 .root {
@@ -34,6 +39,7 @@
     }
     h2 {
       font-size: 30px;
+      font-weight: bold;
       color: var(--text-color);
     }
     span {
@@ -41,8 +47,19 @@
       margin: 0 10px;
     }
   }
+  .spinner {
+    padding: 160px 0;
+  }
   .pageContent {
     padding: 20px;
+    h3 {
+      font-weight: bold;
+    }
+    img { 
+      display: block;
+      width:  70%;
+      margin: 0 auto;
+    }
   }
 }
 

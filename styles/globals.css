@@ -12,6 +12,7 @@ body {
   --bg-body: #e7eaee;
   --bg-content: #fff;
   --text-color: #333;
+  --second-text-color: #000000a6;
   --border-color: #e5e6eb;
   --grey-color: #00000059;
   --box-shadow: 0 1px 3px #1212121a;
@@ -24,6 +25,7 @@ body.dark {
   --bg-body: #282c35;
   --bg-content: #363c48;
   --text-color: #fff;
+  --second-text-color: #ffffffa6;
   --border-color: #fff3;
   --grey-color: #ffffff73;
   --box-shadow: 0 2px 15px 0 #1a1a1ba2;

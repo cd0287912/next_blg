@@ -11,6 +11,7 @@ import { marked } from "marked"
 import hljs from "highlight.js"
 import NavBox from "../../components/navBox"
 import Meta from "../../components/meta"
+import Spinner from "../../components/spinner"
 import { Post, Tag, Sys } from "./../../types"
 
 interface Props {
@@ -51,6 +52,7 @@ export default function ArticleDetail({
       <Head>
         <title>忘不了oh</title>
       </Head>
+
       <div className={styles.root}>
         <div
           className={classnames(styles.pageContainer, {
@@ -71,10 +73,16 @@ export default function ArticleDetail({
             </p>
             <div className={styles.hr}></div>
           </div>
-          <div
-            className={classnames(styles.pageContent, "markdown-body")}
-            dangerouslySetInnerHTML={{ __html: html }}
-          ></div>
+          {!html ? (
+            <div className={styles.spinner}>
+              <Spinner></Spinner>
+            </div>
+          ) : (
+            <div
+              className={classnames(styles.pageContent, "markdown-body")}
+              dangerouslySetInnerHTML={{ __html: html }}
+            ></div>
+          )}
         </div>
         <div className={styles.pageSide}>
           <div className={styles.navContent}>

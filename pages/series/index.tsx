@@ -50,7 +50,7 @@ function SeriesBox(props: Tag) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const tagList = await homeApi.getAllTags<Tag[]>()
   const sys = await homeApi.getSysDetail<Sys>()
   return { props: { tagList, sys } }

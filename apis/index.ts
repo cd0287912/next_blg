@@ -123,7 +123,7 @@ export const commentApis = {
 export const visitorApis = {
   getVisitor<T>(params) {
     return instance<T>({
-      url: "/visit",
+      url: "/visit/list",
       params,
     })
   },
@@ -212,7 +212,7 @@ export const homeApi = {
   saveVisitor<T>() {
     return getInstance<T>({
       url: "/visit",
-      method: "post",
+      method: "get",
     })
   },
   getReadme<T>() {

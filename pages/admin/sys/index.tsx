@@ -113,7 +113,7 @@ export default function System() {
             </Form.Item>
 
             <Form.Item
-              label="系统描述"
+              label="备案号"
               name="sysDesc"
               rules={[{ required: true, message: "输入描述" }]}
             >
@@ -121,7 +121,7 @@ export default function System() {
             </Form.Item>
 
             <Form.Item
-              label="系统描述"
+              label="备注"
               name="sysSubDesc"
               rules={[{ required: true, message: "输入描述" }]}
             >

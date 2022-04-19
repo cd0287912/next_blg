@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "expory": "next build && next export",
     "commit": "git cz"
   },
   "dependencies": {

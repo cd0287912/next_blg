@@ -1,11 +1,9 @@
 .root {
   text-align: center;
   color: var(--text-color);
-  // color: var(--grey-color);
   a {
-    color: var(--text-color);
-    // color: var(--grey-color);
-    font-size: 10px;
+    color: var(--second-text-color);
+    font-size: 12px;
     &:hover {
       color: var(--primary);
     }
@@ -13,4 +11,9 @@
   i {
     font-size: 30px;
   }
+}
+
+.desc {
+  color: var(--second-text-color);
+  span {margin-left: 4px;}
 }

@@ -152,7 +152,7 @@ function Swiper(props: SwiperPorps) {
   )
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const params = { pageNo: 1, pageSize: PAGESIZE, tagId: "" }
   const recomdList = await homeApi.getRecommdPages<Post[]>()
   const tagList = await homeApi.getAllTags<Tag[]>()

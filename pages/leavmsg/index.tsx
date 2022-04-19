@@ -62,7 +62,7 @@ function Leavmsg({ sys }: Props) {
     </Layout>
   )
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const sys = await homeApi.getSysDetail<Sys>()
   return { props: { sys } }
 }

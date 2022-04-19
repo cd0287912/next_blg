@@ -14,6 +14,11 @@ class MyDocument extends Document {
             rel="stylesheet"
             href="//at.alicdn.com/t/font_3203231_a6gp0sx67h6.css"
           />
+          <meta name="Description" content="这是一个前端博客,前端知识库"></meta>
+          <meta
+            name="Keywords"
+            content="忘不了,博客,前端,vue.js,react.js,next.js "
+          ></meta>
         </Head>
         <body>
           <Main />

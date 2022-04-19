@@ -43,7 +43,7 @@ function Readme({ readme, sys }: Props) {
     </Layout>
   )
 }
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const readme = await homeApi.getReadme<{ content: string }>()
   const sys = await homeApi.getSysDetail<Sys>()
   return { props: { readme, sys } }
