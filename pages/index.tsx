@@ -24,7 +24,7 @@ interface Prop {
 interface SwiperPorps {
   recomdList: Post[];
 }
-const PAGESIZE = 20;
+const PAGESIZE = 10;
 
 export default function Home(props: Prop) {
   const pageNoRef = useRef(1);
@@ -77,6 +77,9 @@ export default function Home(props: Prop) {
             {list.map((page) => (
               <ArticlItem {...page} key={page.id} />
             ))}
+          </div>
+          <div className={styles.pageMeta} style={{ marginTop: 20 }}>
+            <Meta {...sys} />
           </div>
         </section>
         <aside className={styles.nav}>

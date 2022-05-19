@@ -2,6 +2,9 @@
   .nav {
     display: none;
   }
+  .pageMeta {
+    display: block !important;
+  }
 }
 
 .root {
@@ -11,6 +14,10 @@
 .content {
   width: 0;
   flex: 1;
+}
+
+.pageMeta {
+  display: none;
 }
 
 .pageList {

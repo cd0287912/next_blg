@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react"
-import Head from "next/head"
-import { useRouter } from "next/router"
-import Layout from "../../components/layout"
-import styles from "./index.module.scss"
-import classnames from "classnames"
-import { homeApi } from "./../../apis/index"
-import { isCdn } from "./../../tools"
-import dayjs from "dayjs"
-import { marked } from "marked"
-import hljs from "highlight.js"
-import NavBox from "../../components/navBox"
-import Meta from "../../components/meta"
-import Spinner from "../../components/spinner"
-import { Post, Tag, Sys } from "./../../types"
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import Layout from "../../components/layout";
+import styles from "./index.module.scss";
+import classnames from "classnames";
+import { homeApi } from "./../../apis/index";
+import { isCdn } from "./../../tools";
+import dayjs from "dayjs";
+import { marked } from "marked";
+import hljs from "highlight.js";
+import NavBox from "../../components/navBox";
+import Meta from "../../components/meta";
+import Spinner from "../../components/spinner";
+import { Post, Tag, Sys } from "./../../types";
 
 interface Props {
-  pageInfo: Post
-  recomdList: Post[]
-  allTags: Tag[]
-  sys: Sys
+  pageInfo: Post;
+  recomdList: Post[];
+  allTags: Tag[];
+  sys: Sys;
 }
 
 export default function ArticleDetail({
@@ -27,10 +27,10 @@ export default function ArticleDetail({
   allTags,
   sys,
 }: Props) {
-  const router = useRouter()
-  const [html, setHtml] = useState()
+  const router = useRouter();
+  const [html, setHtml] = useState();
   useEffect(() => {
-    if (!pageInfo.content) return
+    if (!pageInfo.content) return;
     const html = marked(pageInfo.content, {
       renderer: new marked.Renderer(),
       gfm: true,
@@ -41,11 +41,11 @@ export default function ArticleDetail({
       smartLists: true,
       smartypants: true,
       highlight: function (code) {
-        return hljs.highlightAuto(code).value
+        return hljs.highlightAuto(code).value;
       },
-    })
-    setHtml(html)
-  }, [pageInfo.content])
+    });
+    setHtml(html);
+  }, [pageInfo.content]);
 
   return (
     <Layout {...sys}>
@@ -57,15 +57,20 @@ export default function ArticleDetail({
         <div
           className={classnames(styles.pageContainer, {
             cover: !pageInfo.cover,
-          })}
-        >
+          })}>
           {pageInfo.cover && (
             <div className={styles.pageCover}>
               <img src={isCdn(pageInfo.cover)} alt="" />
             </div>
           )}
           <div className={styles.pageTitle}>
-            <h2>{pageInfo.title}</h2>
+            <h2>
+              {pageInfo.title}
+              {pageInfo.title}
+              {pageInfo.title}
+              {pageInfo.title}
+              {pageInfo.title}
+            </h2>
             <p>
               <span>{dayjs(pageInfo.create_time).format("YYYY-MM-DD")}</span>
               <span>{pageInfo.tag.name}</span>
@@ -80,8 +85,7 @@ export default function ArticleDetail({
           ) : (
             <div
               className={classnames(styles.pageContent, "markdown-body")}
-              dangerouslySetInnerHTML={{ __html: html }}
-            ></div>
+              dangerouslySetInnerHTML={{ __html: html }}></div>
           )}
         </div>
         <div className={styles.pageSide}>
@@ -92,8 +96,7 @@ export default function ArticleDetail({
                   <div
                     onClick={() => router.push(`/article/${page.id}`)}
                     key={page.id}
-                    className={classnames(styles.recomd, "text-overflow")}
-                  >
+                    className={classnames(styles.recomd, "text-overflow")}>
                     {page.title}
                   </div>
                 ))}
@@ -105,8 +108,7 @@ export default function ArticleDetail({
                   <div
                     onClick={() => router.push(`/series/${tag.id}`)}
                     key={tag.id}
-                    className={classnames(styles.recomd, "text-overflow")}
-                  >
+                    className={classnames(styles.recomd, "text-overflow")}>
                     {tag.name}
                   </div>
                 ))}
@@ -117,15 +119,15 @@ export default function ArticleDetail({
         </div>
       </div>
     </Layout>
-  )
+  );
 }
 
 export async function getServerSideProps(ctx) {
-  const id = ctx.params.id
-  const pageInfo = await homeApi.getPageById<Post>(id)
-  const recomdList = await homeApi.getRecommdPages<Post[]>()
-  const allTags = await homeApi.getAllTags<Tag[]>()
-  const sys = await homeApi.getSysDetail<Sys>()
+  const id = ctx.params.id;
+  const pageInfo = await homeApi.getPageById<Post>(id);
+  const recomdList = await homeApi.getRecommdPages<Post[]>();
+  const allTags = await homeApi.getAllTags<Tag[]>();
+  const sys = await homeApi.getSysDetail<Sys>();
   return {
     props: {
       pageInfo,
@@ -133,5 +135,5 @@ export async function getServerSideProps(ctx) {
       allTags,
       sys,
     },
-  }
+  };
 }
