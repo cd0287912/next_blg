@@ -1,37 +1,37 @@
-import { useState, useEffect, useRef } from "react"
-import { Carousel } from "antd"
-import classnames from "classnames"
-import Layout from "./../components/layout"
-import styles from "./index.module.scss"
-import NavBox from "./../components/navBox"
-import ArticlItem from "./../components/articleItem"
-import Meta from "./../components/meta"
-import Head from "next/head"
-import { homeApi } from "./../apis"
-import { isCdn, debounce } from "../tools"
-import dayjs from "dayjs"
-import { useRouter } from "next/router"
-import { Post, Tag, Sys } from "./../types"
+import { useState, useEffect, useRef } from "react";
+import { Carousel } from "antd";
+import classnames from "classnames";
+import Layout from "./../components/layout";
+import styles from "./index.module.scss";
+import NavBox from "./../components/navBox";
+import ArticlItem from "./../components/articleItem";
+import Meta from "./../components/meta";
+import Head from "next/head";
+import { homeApi } from "./../apis";
+import { isCdn, debounce } from "../tools";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
+import { Post, Tag, Sys } from "./../types";
 
 interface Prop {
-  tagList: Tag[]
-  recomdList: Post[]
-  pageList: Post[]
-  total: number
-  sys: Sys
+  tagList: Tag[];
+  recomdList: Post[];
+  pageList: Post[];
+  total: number;
+  sys: Sys;
 }
 
 interface SwiperPorps {
-  recomdList: Post[]
+  recomdList: Post[];
 }
-const PAGESIZE = 20
+const PAGESIZE = 20;
 
 export default function Home(props: Prop) {
-  const pageNoRef = useRef(1)
-  const router = useRouter()
-  const { recomdList, tagList, pageList, total, sys } = props
+  const pageNoRef = useRef(1);
+  const router = useRouter();
+  const { recomdList, tagList, pageList, total, sys } = props;
 
-  const [list, setList] = useState(() => pageList)
+  const [list, setList] = useState(() => pageList);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -39,32 +39,32 @@ export default function Home(props: Prop) {
         pageNo: pageNoRef.current,
         pageSize: PAGESIZE,
         tagId: "",
-      }
+      };
       const result = await homeApi.getPagesList<{
-        list: Post[]
-        total: number
-      }>(params)
-      setList((pre) => [...pre, ...result.list])
-    }
+        list: Post[];
+        total: number;
+      }>(params);
+      setList((pre) => [...pre, ...result.list]);
+    };
     const fn = async (e) => {
-      const body = document.documentElement || document.body
-      const scrollHeight = body.scrollHeight
-      const scrollTop = body.scrollTop
-      const clientHeight = body.clientHeight
+      const body = document.documentElement || document.body;
+      const scrollHeight = body.scrollHeight;
+      const scrollTop = body.scrollTop;
+      const clientHeight = body.clientHeight;
       if (clientHeight + scrollTop >= scrollHeight) {
-        const maxPageNo = Math.ceil(total / PAGESIZE)
+        const maxPageNo = Math.ceil(total / PAGESIZE);
         if (pageNoRef.current < maxPageNo) {
-          pageNoRef.current++
-          getInfo()
+          pageNoRef.current++;
+          getInfo();
         }
       }
-    }
+    };
 
-    document.addEventListener("scroll", debounce(fn, 300))
+    document.addEventListener("scroll", debounce(fn, 300));
     return () => {
-      document.removeEventListener("scroll", debounce(fn, 300))
-    }
-  }, [])
+      document.removeEventListener("scroll", debounce(fn, 300));
+    };
+  }, []);
   return (
     <Layout {...sys}>
       <Head>
@@ -90,8 +90,7 @@ export default function Home(props: Prop) {
                   <div
                     onClick={() => router.push(`/article/${page.id}`)}
                     key={page.id}
-                    className={classnames(styles.recomd, "text-overflow")}
-                  >
+                    className={classnames(styles.recomd, "text-overflow")}>
                     {page.title}
                   </div>
                 ))}
@@ -103,8 +102,7 @@ export default function Home(props: Prop) {
                   <div
                     onClick={() => router.push(`/series/${tag.id}`)}
                     key={tag.id}
-                    className={classnames(styles.recomd, "text-overflow")}
-                  >
+                    className={classnames(styles.recomd, "text-overflow")}>
                     {tag.name}
                   </div>
                 ))}
@@ -115,12 +113,12 @@ export default function Home(props: Prop) {
         </aside>
       </div>
     </Layout>
-  )
+  );
 }
 
 function Swiper(props: SwiperPorps) {
-  const { recomdList } = props
-  const router = useRouter()
+  const { recomdList } = props;
+  const router = useRouter();
   return (
     <div className={styles.swiperContainer}>
       <Carousel autoplay>
@@ -128,14 +126,12 @@ function Swiper(props: SwiperPorps) {
           return (
             <div
               onClick={() => router.push(`/article/${page.id}`)}
-              key={page.id}
-            >
+              key={page.id}>
               <div
                 className={styles.swiperItem}
                 style={{
                   backgroundImage: `url(${isCdn(page.cover)})`,
-                }}
-              >
+                }}>
                 <div className={styles.mask}>
                   <div className={styles.name}>{page.title}</div>
                   <div className={styles.info}>
@@ -145,22 +141,22 @@ function Swiper(props: SwiperPorps) {
                 </div>
               </div>
             </div>
-          )
+          );
         })}
       </Carousel>
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps() {
-  const params = { pageNo: 1, pageSize: PAGESIZE, tagId: "" }
-  const recomdList = await homeApi.getRecommdPages<Post[]>()
-  const tagList = await homeApi.getAllTags<Tag[]>()
+  const params = { pageNo: 1, pageSize: PAGESIZE, tagId: "" };
+  const recomdList = await homeApi.getRecommdPages<Post[]>();
+  const tagList = await homeApi.getAllTags<Tag[]>();
   const result = await homeApi.getPagesList<{
-    list: Post[]
-    total: number
-  }>(params)
-  const sys = await homeApi.getSysDetail<Sys>()
+    list: Post[];
+    total: number;
+  }>(params);
+  const sys = await homeApi.getSysDetail<Sys>();
   return {
     props: {
       recomdList,
@@ -169,5 +165,5 @@ export async function getServerSideProps() {
       total: result.total,
       sys,
     },
-  }
+  };
 }
